@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
 
 trigger:
-- master
+- none
 
 pool:
   vmImage: 'windows-latest'
@@ -20,6 +20,19 @@ steps:
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
+
+- task: replacetokens@4
+  inputs:
+    targetFiles: '**/*.cshtlm'
+    encoding: 'auto'
+    tokenPattern: 'default'
+    writeBOM: true
+    actionOnMissing: 'warn'
+    keepToken: false
+    actionOnNoFiles: 'continue'
+    enableTransforms: false
+    useLegacyPattern: false
+    enableTelemetry: true
 
 - task: VSBuild@1
   inputs:
